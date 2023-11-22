@@ -1,0 +1,164 @@
+
+{% extends 'base.html' %} {% block title%} Discuss_Forum {% endblock %}
+  {% block style %} <link rel="stylesheet" href="/static/assets/css/style.css">{% endblock %}
+ {% block content %}
+
+   <div class="app">
+        <h2>Quizz Time</h2>
+        <div class="quiz">
+            <h3 id="question">Questions goes here </h3>
+            <div id="answer-button">
+                <button class="btn">Answer 1</button>
+                <button class="btn">Answer 2</button>
+                <button class="btn">Answer 3</button>
+                <button class="btn">Answer 4</button>
+            </div>
+            <button id="next-btn">next</button>
+        </div>
+    </div>
+<br>
+<br>
+  <script>
+const questions = [
+    {
+        question: "Who painted the Mona Lisa",
+        answer:[
+            {text: "Vincent van Gogh", correct: false},
+            {text: "Pablo Picasso", correct: false},
+            {text: "Leonardo da Vinci", correct: true},
+            {text: "Michelangelo", correct: false},
+
+        ]
+    },
+        {
+            question: "Who is CEO of netflix?",
+            answer:[
+                {text: "Ted Sarandos", correct: true},
+                {text: "Reed Hastings", correct: false},
+                {text: "Greg Peters", correct: false},
+                {text: " Susan Rice", correct: false},
+
+            ]
+        },
+        {
+            question: " What is the largest continent by land area?",
+            answer:[
+                {text: " Asia", correct: true},
+                {text: " Europe", correct: false},
+                {text: " Australia", correct: false},
+                {text: "Russia", correct: false},
+
+            ]
+        },
+        {
+            question: " In which sport would you perform a slam dunk?",
+            answer:[
+                {text: " Basketball", correct: true},
+                {text: " Tennis", correct: false},
+                {text: " Hockey", correct: false},
+                {text: " Golf", correct: false},
+
+            ]
+        },
+        {
+            question: "Which actor played the role of Tony Stark in the Marvel Cinematic Universe??",
+            answer:[
+
+                {text: " Chris Evans", correct: false},
+                {text: "  Robert Downey Jr.", correct: true},
+                {text: " Chris Hemsworth", correct: false},
+                {text: " Mark Ruffalo", correct: false},
+
+            ]
+        },
+
+
+];
+
+const questionElement = document.getElementById("question");
+const answerButtons = document.getElementById("answer-button");
+const nextbutton = document.getElementById("next-btn");
+
+let currentQuestionIndex =0;
+let scre = 0;
+
+function startQuiz(){
+    currentQuestionIndex = 0;
+    score = 0;
+    nextbutton.innerHTML = "Next"
+    showQuestion();
+}
+
+function showQuestion(){
+    resetState();
+    let currentQuestion = questions[currentQuestionIndex];
+    let questionNo = currentQuestionIndex + 1;
+    questionElement.innerHTML = questionNo + ". "+ currentQuestion.question;
+
+
+    currentQuestion.answer.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerHTML = answer.text;
+        button.classList.add("btn");
+        answerButtons.appendChild(button);
+        if(answer.correct){
+            button.dataset.correct = answer.correct;
+        }
+        button.addEventListener("click", selectAnswer);
+    } );
+}
+
+function resetState(){
+    nextbutton.style.display = "none"
+    while(answerButtons.firstChild){
+        answerButtons.removeChild(answerButtons.firstChild);
+
+    }
+}
+function selectAnswer(e){
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true"
+    if(isCorrect){
+        selectedBtn.classList.add("correct");
+        score++;
+    }else{
+        selectedBtn.classList.add("incorrect")
+    }
+    Array.from(answerButtons.children).forEach(button => {
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
+    nextbutton.style.display = "block"
+
+}
+function showScore(){
+    resetState();
+    questionElement.innerHTML = `you score ${score} out of ${questions.length}!`;
+    nextbutton.innerHTML = "play again";
+    nextbutton.style.display = "block";
+}
+
+
+function handleNextButton(){
+    currentQuestionIndex++;
+    if(currentQuestionIndex <  questions.length){
+        showQuestion();
+    }else{
+        showScore();
+    }
+}
+nextbutton.addEventListener("click", ()=>{
+    if(currentQuestionIndex < questions.length){
+        handleNextButton();
+    }else{
+        startQuiz();
+    }
+} );
+startQuiz ();
+
+
+
+    </script>
+{% endblock %}

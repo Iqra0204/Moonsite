@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block title%} Discuss_Forum {% endblock %}
+ {% block content %}
+
+<!--Showw-->
+
+<div class="container">
+  <h3 style="color=blue"> Discuss </h3>
+  <div class="form-group">
+    <form method="post" action="#">
+      {% csrf_token %} {{form.media}} {{form.as_p}}
+      <input type="hidden" name="parent" value="" />
+      <button class="btn btn-sm my-2 btn-secondary" type="submit">Post</button>
+    </form>
+  </div>
+  {% for b in queries %}
+
+  <!-- <div class="row my-3"> -->
+    <div class="user-profile col-md-1">
+      <img
+        src="/static/assets/img/instructors/instructor-1.jpg"
+        height="40px"
+        width="80px"
+        alt=""
+      />
+    </div>
+    <div class="comment col-md-10">
+      <h4 style="color: blue">{{b.name}}{{b.timestamp }}</h4>
+
+      <h6>{{b.comments|safe}}</h6>
+
+      <div class="reply">
+        <button
+          class="btn btn-sm btn-primary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseExample{{b.id}}"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >
+          Reply
+        </button>
+
+        <div class="collapse" id="collapseExample{{b.id}}">
+          <div class="form-group">
+            <form method="post" action="#">
+              {% csrf_token %} {{form.media}} {{form.as_p}}
+              <input type="hidden" name="parent" value="{{b.id}}" />
+              <button class="btn btn- sm btn-secondary" type="submit">
+                Post
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    {% endfor %}
+  </div> <!-- Containre -->
+  {% endblock %}
+

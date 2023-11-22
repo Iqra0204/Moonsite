@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block title%} Discuss_Forum {% endblock %}
+  {% block style %} <link rel="stylesheet" href="/static/assets/css/style.css">{% endblock %}
+ {% block content %}
+<br>
+<br>
+<div class="container" style="display:flex align-items:center justify-content:center margin:100px">
+ <h1  style="color:white">Treasure Hunt Quiz</h1>
+    <br>
+    <br>
+    <h4 id="question" style="color:white"></h4>
+    <div id="answer">
+        <input type="text" id="userAnswer" style="font-size:20px" placeholder="Your Answer">
+        <button class="btn btn-btn success "  onclick="checkAnswer()">Submit Answer</button>
+        <br>
+        <br>
+    </div>
+
+    <div id="result"></div>
+</div>
+<br>
+<br>
+<br>
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                answer: "Paris"
+            },
+            {
+                question: "How many continents are there on Earth?",
+                answer: "7"
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                answer: "William Shakespeare"
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function displayQuestion() {
+            document.getElementById("question").textContent = questions[currentQuestion].question;
+            document.getElementById("userAnswer").value = "";
+            document.getElementById("result").textContent = "";
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("userAnswer").value.toLowerCase();
+            const correctAnswer = questions[currentQuestion].answer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById("result").textContent = "Correct! You found the treasure!";
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    displayQuestion();
+                } else {
+                    document.getElementById("question").textContent = "Congratulations! You've completed the quiz!";
+                    document.getElementById("answer").style.display = "none";
+                }
+            } else {
+                document.getElementById("result").textContent = "Wrong answer. Try again!";
+            }
+        }
+
+        displayQuestion();
+    </script>
+{% endblock %}

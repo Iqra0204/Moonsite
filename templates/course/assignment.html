@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title%} Assignment Forum {% endblock %}
+ {% block content %}
+
+<div class="container"></div>
+<div class="container">{{assignment}}</div>
+   <form method="post" action="#" class="container">
+{% csrf_token %}
+            <h3>Submit your assignment</h3>
+        <input class="form-control"  name='assignment' type="text" value="" id="project" placeholder="give your github project link">
+
+     <button type="submit" class="btn btn-primary btn-sm" style="margin:45px;">Submit</button>
+
+<br>
+       <button class="btn btn-success" style="margin:45px"> Score:-{{score}} </button>
+
+                    </form>
+{% endblock %}
